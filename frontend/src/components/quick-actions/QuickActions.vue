@@ -610,6 +610,16 @@ function onEnter(event: KeyboardEvent) {
 }
 
 async function doCmd() {
+	// A selected command owns Enter: the query is its title, so a single search
+	// hit (a project named like the task being created, say) must not hijack it.
+	if (selectedCmd.value !== null && query.value !== '') {
+		if (!isQuickAddMode) {
+			closeQuickActions()
+		}
+		await selectedCmd.value.action()
+		return
+	}
+
 	if (results.value.length === 1 && results.value[0].items.length === 1) {
 		const result = results.value[0]
 		doAction(result.type, result.items[0])
@@ -617,15 +627,7 @@ async function doCmd() {
 		return
 	}
 
-	if (selectedCmd.value === null || query.value === '') {
-		openTaskAfterCreate = false
-		return
-	}
-
-	if (!isQuickAddMode) {
-		closeQuickActions()
-	}
-	await selectedCmd.value.action()
+	openTaskAfterCreate = false
 }
 
 async function newTask() {

@@ -354,6 +354,14 @@ const DRAG_OPTIONS = {
 	dragClass: 'task-dragging',
 	delayOnTouchOnly: true,
 	delay: 1000,
+	// Auto-scroll the board while dragging. Without an explicit sensitivity the
+	// cursor has to hug the edge before scrolling kicks in, which leaves buckets
+	// that are further off screen unreachable. bubbleScroll keeps the scroll going
+	// from the bucket's task list up to the board itself.
+	scroll: true,
+	scrollSensitivity: 100,
+	scrollSpeed: 50,
+	bubbleScroll: true,
 } as const
 
 const MIN_SCROLL_HEIGHT_PERCENT = 0.25
